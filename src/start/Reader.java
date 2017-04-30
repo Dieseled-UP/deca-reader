@@ -1,3 +1,7 @@
+package start;
+
+import services.ScheduledTask;
+
 import java.util.Timer;
 
 /**
@@ -9,7 +13,7 @@ public class Reader {
     public static void main(String []args) {
 
         Timer time = new Timer(); // Instantiate Timer Object
-        ScheduledTask st = new ScheduledTask(); // Instantiate ScheduledTask class
+        ScheduledTask st = new ScheduledTask(); // Instantiate services.ScheduledTask class
         time.schedule(st, 0, 500); // Create Repetitively task for every 1 secs
     }
 }
