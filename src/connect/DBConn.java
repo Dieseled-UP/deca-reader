@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by denis on 30/04/17
  */
-public class DBConn {
+class DBConn {
 
     // declare variables
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
@@ -24,7 +24,7 @@ public class DBConn {
      *
      * @return Connection con
      */
-    public static Connection getConnection() {
+    private static Connection getConnection() {
 
         System.setProperty(DB_DRIVER, "");
 
@@ -51,7 +51,7 @@ public class DBConn {
      * @param statementIn String query
      * @return PreparedStatement statement
      */
-    public static PreparedStatement pStatement(String statementIn) {
+    static PreparedStatement pStatement(String statementIn) {
 
         try {
 
@@ -68,9 +68,9 @@ public class DBConn {
     /**
      * Method to close the connection
      *
-     * @throws SQLException
+     * @throws SQLException if connection cannot close
      */
-    public static void finish() throws SQLException {
+    static void finish() throws SQLException {
 
         con.close();
     }
