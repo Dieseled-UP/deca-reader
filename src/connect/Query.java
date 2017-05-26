@@ -11,7 +11,7 @@ public class Query {
 
         try {
 
-            String sql = "INSERT INTO dieseled_wp.deca_read (anchor_one, anchor_two, anchor_three) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO masters.deca_read (anchor_one, anchor_two, anchor_three) VALUES (?, ?, ?)";
             PreparedStatement statement = DBConn.pStatement(sql);
 
             statement.setString(1, readOne);

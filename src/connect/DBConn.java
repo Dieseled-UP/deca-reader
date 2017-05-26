@@ -13,9 +13,9 @@ class DBConn {
 
     // declare variables
     private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_CONNECTION = "jdbc:mysql://52.16.53.121/database";
-    private static final String DB_USER = "user";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_CONNECTION = "jdbc:mysql://localhost/masters";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "";
     private static Connection con = null;
     private static PreparedStatement statement = null;
 

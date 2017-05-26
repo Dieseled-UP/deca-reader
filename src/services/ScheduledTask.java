@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  */
 public class ScheduledTask extends TimerTask {
 
-    private Path dir = Paths.get("C:\\Users\\denis\\Documents\\decawave_trek\\TREK1000\\DecaRangeRTLS-PC\\Logs\\");  // specify your directory
+    private Path dir = Paths.get("/home/denis/Documents/logs/");  // specify your directory
     private int count = 0;
 
     @Override
@@ -30,7 +30,7 @@ public class ScheduledTask extends TimerTask {
 
             try (Stream<String> stream = Files.lines(Paths.get(newFile.toString()))) {
 
-                writeOutResults(getAnchorReads(getReducedList(stream)));
+                getReducedList(stream);
 
             } catch (IOException e) {
 
@@ -66,11 +66,19 @@ public class ScheduledTask extends TimerTask {
      * @param stream read from the log file
      * @return List containing the 3 reads
      */
-    private List<String> getReducedList(Stream<String> stream) {
+    private void getReducedList(Stream<String> stream) {
 
-        List<String> list = stream.collect(Collectors.toList());
+        /*List<String> list = stream.collect(Collectors.toList());
 
-        return list.subList(Math.max(list.size() - 5, 0), (list.size() - 2));
+        return list.subList(Math.max(list.size() - 5, 0), (list.size() - 2));*/
+
+        getAnchorReads(stream
+                .filter(line -> line.contains(":RR:0:"))
+                .collect(Collectors.toList()));
+
+        /*return stream
+                .filter(line -> line.contains(":RR:0:"))
+                .collect(Collectors.toList());*/
     }
 
     /**
@@ -78,7 +86,7 @@ public class ScheduledTask extends TimerTask {
      * @param list List containing the 3 reads
      * @return array with the three distances
      */
-    private String[] getAnchorReads(List<String> list) {
+    private void getAnchorReads(List<String> list) {
 
         String []query = new String[3];
 
@@ -89,11 +97,14 @@ public class ScheduledTask extends TimerTask {
             query[count] = range[6];
             System.out.println("Range for Anchor: " + range[4] + ", Distance: " + range[6]);
             count++;
+
+            if (count == 3) {
+                count = 0;
+                writeOutResults(query);
+            }
         }
 
         System.out.print("\n");
-
-        return query;
     }
 
     /**
@@ -102,6 +113,7 @@ public class ScheduledTask extends TimerTask {
      */
     private void writeOutResults(String[] results) {
 
+        count = 0;
         Query.postReads(results[0], results[1], results[2]);
     }
 }
