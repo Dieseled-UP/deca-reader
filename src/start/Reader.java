@@ -14,6 +14,6 @@ public class Reader {
 
         Timer time = new Timer(); // Instantiate Timer Object
         ScheduledTask st = new ScheduledTask(); // Instantiate services.ScheduledTask class
-        time.schedule(st, 0, 500); // Create Repetitively task for every 1 secs
+        time.schedule(st, 0, 1000); // Create Repetitively task for every 1 secs
     }
 }

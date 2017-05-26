@@ -7,16 +7,16 @@ import com.mysql.jdbc.PreparedStatement;
  */
 public class Query {
 
-    public static boolean postReads(String readOne, String readTwo, String readThree) {
+    public static boolean postReads(double readOne, double readTwo, double readThree) {
 
         try {
 
-            String sql = "INSERT INTO masters.deca_read (anchor_one, anchor_two, anchor_three) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO masters.deca_night (anchor_one, anchor_two, anchor_three) VALUES (?, ?, ?)";
             PreparedStatement statement = DBConn.pStatement(sql);
 
-            statement.setString(1, readOne);
-            statement.setString(2, readTwo);
-            statement.setString(3, readThree);
+            statement.setDouble(1, readOne);
+            statement.setDouble(2, readTwo);
+            statement.setDouble(3, readThree);
 
             int done = statement.executeUpdate();
 

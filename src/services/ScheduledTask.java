@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -64,56 +65,79 @@ public class ScheduledTask extends TimerTask {
     /**
      * Method to get the last 3 reads form the log
      * @param stream read from the log file
-     * @return List containing the 3 reads
      */
     private void getReducedList(Stream<String> stream) {
 
         /*List<String> list = stream.collect(Collectors.toList());
 
-        return list.subList(Math.max(list.size() - 5, 0), (list.size() - 2));*/
+        getAnchorReads(list.subList(Math.max(list.size() - 5, 0), (list.size() - 2)));*/
 
         getAnchorReads(stream
                 .filter(line -> line.contains(":RR:0:"))
                 .collect(Collectors.toList()));
-
-        /*return stream
-                .filter(line -> line.contains(":RR:0:"))
-                .collect(Collectors.toList());*/
     }
 
     /**
      * Method to split the read String and subtract the range reads
      * @param list List containing the 3 reads
-     * @return array with the three distances
      */
     private void getAnchorReads(List<String> list) {
 
-        String []query = new String[3];
+        ArrayList<String> query = new ArrayList<>();
 
         for (String read : list) {
 
             String[] range = read.split(":");
 
-            query[count] = range[6];
+            query.add(range[6]);
             System.out.println("Range for Anchor: " + range[4] + ", Distance: " + range[6]);
             count++;
 
             if (count == 3) {
+
                 count = 0;
-                writeOutResults(query);
+                addDecimalPoint(query);
+                query.clear();
             }
         }
 
         System.out.print("\n");
     }
 
+    private void addDecimalPoint(ArrayList<String> list) {
+
+        int num = 0;
+
+        for (String read : list) {
+
+            list.set(num, new StringBuffer(read).insert(read.length() - 3, ".").toString());
+            num++;
+        }
+
+        stringToDouble(list);
+    }
+
+    private void stringToDouble(ArrayList<String> list) {
+
+        double []temp = new double[3];
+        int digit = 0;
+
+        for (String read : list) {
+
+            temp[digit] = Double.parseDouble(read);
+            digit++;
+        }
+
+        writeOutResults(temp);
+    }
+
     /**
      * Method to subtract the three distances and send to database
      * @param results String array containing distance reads
      */
-    private void writeOutResults(String[] results) {
+    private void writeOutResults(double[] results) {
 
-        count = 0;
+        System.out.println(results[0] + ", " + results[1] + ", " + results[2]);
         Query.postReads(results[0], results[1], results[2]);
     }
 }
