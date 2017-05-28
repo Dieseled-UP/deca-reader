@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  */
 public class ScheduledTask extends TimerTask {
 
-    private Path dir = Paths.get("/home/denis/Documents/logs/");  // specify your directory
+    private Path dir = Paths.get("C:\\Users\\denis\\Documents\\decawave_trek\\TREK1000\\DecaRangeRTLS-PC\\Logs\\");  // specify your directory
     private int count = 0;
 
     @Override
@@ -68,13 +68,15 @@ public class ScheduledTask extends TimerTask {
      */
     private void getReducedList(Stream<String> stream) {
 
-        /*List<String> list = stream.collect(Collectors.toList());
-
-        getAnchorReads(list.subList(Math.max(list.size() - 5, 0), (list.size() - 2)));*/
-
-        getAnchorReads(stream
+        List<String> list = stream
                 .filter(line -> line.contains(":RR:0:"))
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+
+        getAnchorReads(list.subList(Math.max(list.size() - 5, 0), (list.size() - 2)));
+
+        /*getAnchorReads(stream
+                .filter(line -> line.contains(":RR:0:"))
+                .collect(Collectors.toList()));*/
     }
 
     /**
@@ -93,7 +95,7 @@ public class ScheduledTask extends TimerTask {
             System.out.println("Range for Anchor: " + range[4] + ", Distance: " + range[6]);
             count++;
 
-            if (count == 3) {
+            if (count == 1) {
 
                 count = 0;
                 addDecimalPoint(query);
@@ -119,7 +121,7 @@ public class ScheduledTask extends TimerTask {
 
     private void stringToDouble(ArrayList<String> list) {
 
-        double []temp = new double[3];
+        double []temp = new double[1];
         int digit = 0;
 
         for (String read : list) {
@@ -137,7 +139,8 @@ public class ScheduledTask extends TimerTask {
      */
     private void writeOutResults(double[] results) {
 
-        System.out.println(results[0] + ", " + results[1] + ", " + results[2]);
-        Query.postReads(results[0], results[1], results[2]);
+//        System.out.println(results[0] + ", " + results[1] + ", " + results[2]);
+        System.out.println(results[0]);
+        Query.postReads(results[0], 0, 0);
     }
 }
