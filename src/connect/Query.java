@@ -7,23 +7,18 @@ import com.mysql.jdbc.PreparedStatement;
  */
 public class Query {
 
-    public static boolean postReads(String readOne, String readTwo, String readThree) {
+    public static void postReads(double readOne, double readTwo, double readThree) {
 
         try {
 
-            String sql = "INSERT INTO masters.deca_read (anchor_one, anchor_two, anchor_three) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO ratchet.deca_read (anchor_zero, anchor_one, anchor_two) VALUES (?, ?, ?)";
             PreparedStatement statement = DBConn.pStatement(sql);
 
-            statement.setString(1, readOne);
-            statement.setString(2, readTwo);
-            statement.setString(3, readThree);
+            statement.setDouble(1, readOne);
+            statement.setDouble(2, readTwo);
+            statement.setDouble(3, readThree);
 
-            int done = statement.executeUpdate();
-
-            if (done == 1) {
-
-                return true;
-            }
+            statement.executeUpdate();
 
             // Close the connection
             DBConn.finish();
@@ -31,7 +26,5 @@ public class Query {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 }
